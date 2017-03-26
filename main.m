@@ -5,6 +5,12 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+clc;
+clear;
+close all;
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 %Set up the size of Confirguration Space 100 * 100
 Sx = int8(0:100);
 Sy = int8(0:100);
@@ -28,24 +34,43 @@ closeSet = NodeInit;
 %Initialize Maximum Node Number
 K = 1000;
 
+%Initialize NodeNew
+NodeNew = start;
+
+%Initialize the figure
+figure(1), axis ([0 100 0 100]), hold on;
+
 % for loop to generate RRT
-for k = 1 : 10
+for k = 1 : K
     
     NodeRand = RANDOM_STATE();
     
     NodeNear = NEAREST_NEIGHBOR(NodeRand, closeSet);
     
-    NodeNew = NEW_STATE(NodeNear, NodeRand, epsilon);
+    NodeTemp = NEW_STATE(NodeNear, NodeRand, epsilon);
     
-    closeSet(end+1) = NodeNew;
+    if InObstacle(NodeTemp) == false
+        NodeNew = NodeTemp;
+        
+       closeSet(end+1) = NodeNew;
     
+    %Generate Edge for draw
     Edge.x = [NodeNew.x  NodeNear.x];
     Edge.y = [NodeNew.y  NodeNear.y];
-    
-    figure (1); 
-    
+ 
+    %Draw RRT trees  
     line(Edge.x , Edge.y);
     hold on;
+    end
+    
+    if findGoal(NodeNew,goal) == true 
+        goal.previous = NodeNew;
+        reconstructPath(start , goal);
+        disp('find the goal');
+        return;
+        
+    end
+              
     
 end
 
