@@ -2,6 +2,8 @@
 
 function NodeRand = RANDOM_STATE()
 
+rng shuffle;
+
 NodeRand.x = randi([0,100]);
 NodeRand.y = randi([0,100]);
 

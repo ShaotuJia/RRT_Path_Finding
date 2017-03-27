@@ -2,6 +2,9 @@
 %ENPM661 Homework 3
 %Author: Shaotu Jia
 %Brief: This program is to find fesiable path using RRT algorithm
+%Output Explantion: the output is figures and saved in 'Problem_Results'
+%folder. In each figure, 'star point' means the start point, 'circle point'
+%means goal point, 'green line' means the feasible path
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -10,35 +13,33 @@ clear;
 close all;
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-%Set up the size of Confirguration Space 100 * 100
-Sx = int8(0:100);
-Sy = int8(0:100);
-
-% Initialize Problem_1 requirements
-start.x = 75;
-start.y = 85;
+% !!!change this section for different inputs!!!
+% Initialize Problem_5 requirements
+start.x = 1;
+start.y = 99;
 start.previous.x = -1;
 start.previous.y = -1;
 goal.x = 100;
 goal.y = 0;
 goal.R = 20;
-epsilon = 10; % the increment of every step
+epsilon = 1; % the increment of every step
 
+%Initialize Maximum Node Number
+K = 4000;
+
+%Initialize the figure
+figure(1), title('Problem 5 RRT Graph'), axis ([0 100 0 100]), hold on;
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Initialize NodeInitial
 NodeInit = start;
 
 % Add NodeInit to closeSet
 closeSet = NodeInit;
 
-%Initialize Maximum Node Number
-K = 1000;
-
 %Initialize NodeNew
 NodeNew = start;
 
-%Initialize the figure
-figure(1), axis ([0 100 0 100]), hold on;
 
 % for loop to generate RRT
 for k = 1 : K
@@ -49,7 +50,7 @@ for k = 1 : K
     
     NodeTemp = NEW_STATE(NodeNear, NodeRand, epsilon);
     
-    if InObstacle(NodeTemp) == false
+    if InObstacle(NodeNear , NodeTemp) == false
         NodeNew = NodeTemp;
         
        closeSet(end+1) = NodeNew;
@@ -66,6 +67,7 @@ for k = 1 : K
     if findGoal(NodeNew,goal) == true 
         goal.previous = NodeNew;
         reconstructPath(start , goal);
+        print('-f1','Problem_5','-djpeg');
         disp('find the goal');
         return;
         

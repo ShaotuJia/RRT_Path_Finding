@@ -1,0 +1,13 @@
+function dist  = lineToCenter(NodeNear , NodeTemp , C)
+
+ %distance between obstacle center to the line of NodeTemp and NodeNear
+    VectorNearToCenter = [OB(1)-NodeNear.x OB(2)-NodeNear.y];
+    VectorNearToTemp = [NodeTemp.x-NodeNear.x NodeTemp.y-NodeNear.y];
+    
+    CrossProduct = VectorNearToCenter(1)*VectorNearToTemp(2) - VectorNearToCenter(2)*VectorNearToTemp(1);
+    lineToCenter = abs(CrossProduct)/norm(VectorNearToCenter); 
+    dist = lineToCenter;
+    disp(lineToCenter);
+
+
+end

@@ -9,7 +9,7 @@ function reconstructPath(start , goal)
  plot (goal.x , goal.y , '-o' , 'MarkerEdgeColor' , 'black');
  hold on;
  
- while temp.x ~= start.x && temp.y ~= start.y
+ while temp.x ~= start.x || temp.y ~= start.y
      
      Path.x = [temp.previous.x temp.x];
      Path.y = [temp.previous.y temp.y];
